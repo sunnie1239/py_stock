@@ -1,3 +1,5 @@
+import time
+
 def three_days(data):
 
     result    = []
@@ -6,10 +8,10 @@ def three_days(data):
     cnt_down  = 0
 
     for d in data:
-        if d - yesterday > 0: # 漲
+        if d - yesterday > 0:
             cnt_up += 1
             cnt_down = 0
-        elif d - yesterday < 0: # 跌
+        elif d - yesterday < 0: 
             cnt_up = 0
             cnt_down += 1
         else: # 持平
@@ -28,10 +30,30 @@ def three_days(data):
     return result           
 
 
+def three_days2(data): # 此作法執行效率較慢
+    
+    result = []
+
+    for i in range(len(data)):
+        if i < 3:
+            result.append(0)
+        else: 
+            if data[i-3] < data[i-2] < data[i-1] < data[i]:
+                result.append(1) # 連三漲
+            elif data[i-3] > data[i-2] > data[i-1] > data[i]:
+                result.append(-1) # 連三跌
+            else:
+                result.append(0) # 其他
+
+    return result 
+
 def main():
-    data = [9422, 9468, 9512, 9524, 9550, 9450, 9410, 9368]
+    data = [9422, 9468, 9512, 9524, 9550, 9450, 9410, 9368] * 1000000
+    start = time.time()
     result = three_days(data)
-    print(result)
+    end = time.time()
+    # print(result)
+    print('Spent ', end-start, 'seconds')
 
 
 main()    
